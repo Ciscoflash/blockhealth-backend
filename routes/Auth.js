@@ -84,7 +84,7 @@ router.post('/login', async (req, res) => {
                         "UserInfo":{
                             "email":hospital.email
                         }
-                    }, process.env.SECRET_TOKEN, {expiresIn: '60s'}
+                    }, process.env.SECRET_TOKEN, {expiresIn: '3600s'}
                 )
                 const refreshToken = jwt.sign(
                     {

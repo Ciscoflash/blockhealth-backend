@@ -40,7 +40,7 @@ router.post('/:hospital_id/patients', async (req, res) => {
     const hospital = await Hospital.findById(req.params.hospital_id);
     if(!hospital) res.status(404).json({error: 'Not Found'});
 
-    const { name, patient_id, age, marital_status, latest_diagnosis, sex, height, weight } = req.body
+    const { name, patient_id, age, marital_status, latest_diagnosis, sex, height, weight, heart_rate, pressure, oxygen, respiratory, temperature } = req.body
 
     try {
         const patientObj = new Patient({
@@ -52,7 +52,12 @@ router.post('/:hospital_id/patients', async (req, res) => {
             latest_diagnosis,
             sex,
             height,
-            weight
+            weight,
+            heart_rate,
+            pressure,
+            oxygen,
+            respiratory,
+            temperature
         })
 
         const patient = await patientObj.save()

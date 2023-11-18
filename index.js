@@ -6,6 +6,8 @@ const mongoose = require("mongoose")
 const hospitalRouter = require('./routes/Hospital')
 const authRouter = require("./routes/Auth")
 const patientRouter = require("./routes/Patient")
+const medicationRouter = require("./routes/Medication")
+const allergyRouter = require("./routes/Allergies")
 
 const app = express();
 const baseUrl = process.env.BASE_API
@@ -20,6 +22,8 @@ app.use(express.json());
 app.use(`${baseUrl}/hospitals`, hospitalRouter)
 app.use(`${baseUrl}/auth`, authRouter)
 app.use(`${baseUrl}/hospitals`, patientRouter)
+app.use(`${baseUrl}/hospitals`, medicationRouter)
+app.use(`${baseUrl}/hospitals`, allergyRouter)
 
 // DB Connect
 mongoose.connect(process.env.DB_URL)
