@@ -2,14 +2,15 @@ const mongoose = require('mongoose')
 
 const patientSchema = new mongoose.Schema({
     name: String,
-    user_id: Number,
+    hospital_id: String,
+    patient_id: Number,
     age: Number,
-    maritalStatus: String,
-    Sex: String,
-    Height: String,
-    Weight: String,
-    updatedAt: Date.now()
-})
+    marital_status: String,
+    latest_diagnosis: String,
+    sex: String,
+    height: String,
+    weight: String
+}, {timestamps: true})
 
 const Patient = mongoose.model('Patient', patientSchema)
 

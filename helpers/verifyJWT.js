@@ -12,13 +12,11 @@ const verifyJwt = () => {
             jwt.verify(token, process.env.SECRET_TOKEN, (err, decodedToken) => {
                 if(err) {
                     console.error(err.message);
-                    res.redirect('/api/v1/auth/login');
                 } else {
                     if(decodedToken) {
                         next();
                     } else {
                         res.redirect('/api/v1/auth/login');
-                        return res.status(403).send('Access denied. User Unauthorized');
                     }
                 }
             });

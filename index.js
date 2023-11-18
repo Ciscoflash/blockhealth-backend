@@ -3,8 +3,9 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const mongoose = require("mongoose")
-const userRouter = require('./routes/User')
+const hospitalRouter = require('./routes/Hospital')
 const authRouter = require("./routes/Auth")
+const patientRouter = require("./routes/Patient")
 
 const app = express();
 const baseUrl = process.env.BASE_API
@@ -16,8 +17,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Routes
-app.use(`${baseUrl}/user`, userRouter)
+app.use(`${baseUrl}/hospitals`, hospitalRouter)
 app.use(`${baseUrl}/auth`, authRouter)
+app.use(`${baseUrl}/hospitals`, patientRouter)
 
 // DB Connect
 mongoose.connect(process.env.DB_URL)

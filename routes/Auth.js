@@ -1,10 +1,9 @@
-const User = require('../models/User')
+const Hospital = require('../models/Hospital')
 const express = require('express')
 const router = express.Router();
 const Joi = require("joi");
 const jwt = require("jsonwebtoken")
 const { hashPassword, comparePassword } = require("../helpers/hashPassword")
-const bcrypt = require("bcrypt");
 
 function generateToken(name) {
     return jwt.sign({ name: name }, process.env.JWT_SECRET, {
@@ -35,14 +34,14 @@ router.post('/signup', async (req, res) => {
         return res.status(400).json({ error: errorMessage });
     }
 
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
+    const existingHospital = await Hospital.findOne({ email });
+    if (existingHospital) {
         return res
             .status(409)
             .json({ error: "Invalid email account, Email already exists" });
     }
 
-    const newUser = new User({
+    const newHospital = new Hospital({
         name,
         email,
         city,
@@ -50,8 +49,7 @@ router.post('/signup', async (req, res) => {
     });
 
     try {
-        console.log(newUser);
-        const user = await newUser.save();
+        const hospital = await newHospital.save();
 
         // Generate JWT token
         const token = generateToken(name);
@@ -60,10 +58,10 @@ router.post('/signup', async (req, res) => {
             message: "User created successfully",
             success: true,
             token,
-            user
+            hospital
         });
     } catch (error) {
-        console.error(error); // Log the saveError object for debugging
+        console.error(error);
         return res
             .status(500)
             .json({ error: "Failed to save user to the database" });
@@ -74,43 +72,42 @@ router.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        const user = await User.findOne({ email: email });
-        if(!user) {
-            return res.json({error: "user not found", code: 404, success: false});
+        const hospital = await Hospital.findOne({ email: email });
+        if(!hospital) {
+            return res.json({error: "hospital not found", code: 404, success: false});
         } else{
-            const match = comparePassword(password, user.password);
+            const match = comparePassword(password, hospital.password);
             if(match) {
                 // create jwt
                 const accessToken = jwt.sign(
                     {
                         "UserInfo":{
-                            "email":user.email
+                            "email":hospital.email
                         }
                     }, process.env.SECRET_TOKEN, {expiresIn: '60s'}
                 )
                 const refreshToken = jwt.sign(
                     {
-                        "email":user.email
+                        "email":hospital.email
                     }, process.env.REFRESH_TOKEN, {expiresIn: '1d'}
                 )
 
                 // saving refresh token with current user
-                user.refresh_token = refreshToken;
-                await user.save();
+                hospital.refresh_token = refreshToken;
+                await hospital.save();
 
                 // create a secure cookie with refresh token
                 res.cookie("jwt", refreshToken, {
                     httpOnly: true,
                     secure: true,
-                    sameSite: "None",
                     maxAge: 24 * 60 * 60 * 1000,
                 });
                 return res.json({
                     code: 200,
                     message: "logged in successfully",
-                    user: {
-                        email: user.email,
-                        username: user.username,
+                    hospital: {
+                        email: hospital.email,
+                        username: hospital.username,
                         accessToken,
                     },
                 });

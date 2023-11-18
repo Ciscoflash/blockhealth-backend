@@ -1,36 +1,35 @@
-const User = require('../models/User')
+const Hospital = require('../models/Hospital')
 const express = require('express')
 const router = express.Router();
-// const verifyJWT = require('../helpers/verifyJWT')
 
-// Get all users
+// Get all hospitals
 router.get('/', async (req, res) => {
-    const users = await User.find();
+    const hospitals = await Hospital.find();
 
-    if(!users) {
+    if(!hospitals) {
         res.status(404).json({error: 'Not Found'});
     }
 
     res.status(200)
         .json({
             success: true,
-            users: users
+            hospitals
         }
     );
 })
 
-//Get one user
-router.get('/:id', async (req, res) => {
-    const user = await User.findById(req.params.id);
+//Get one hospital
+router.get('/:hospital_id', async (req, res) => {
+    const hospital = await Hospital.findById(req.params.hospital_id);
 
-    if(!user) {
+    if(!hospital) {
         res.status(404).json({error: 'Not Found'});
     }
 
     res.status(200)
         .json({
             success: true,
-            users: user
+            hospital
         }
     );
 })

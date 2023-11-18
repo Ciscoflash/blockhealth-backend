@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema({
+const hospitalSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -9,12 +9,11 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    hashedPassword: {
+    password: {
         type: String,
         required: true,
     },
     phone: {
-        required: true,
         type: Number
     },
     city: {
@@ -23,6 +22,6 @@ const userSchema = new mongoose.Schema({
     },
 })
 
-const User = mongoose.model('User', userSchema);
+const Hospital = mongoose.model('Hospital', hospitalSchema);
 
-module.exports = User;
+module.exports = Hospital;
