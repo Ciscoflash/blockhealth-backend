@@ -16,7 +16,7 @@ const verifyJwt = () => {
                     if(decodedToken) {
                         next();
                     } else {
-                        res.redirect('/api/v1/auth/login');
+                        res.redirect('/api/v1/auth/login'); 
                     }
                 }
             });
